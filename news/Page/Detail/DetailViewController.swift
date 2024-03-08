@@ -6,24 +6,31 @@
 //
 
 import UIKit
+import WebKit
 
-class DetailViewController: UIViewController {
-
+class DetailViewController: UIViewController, WKNavigationDelegate{
+    var webUrl: String = ""
+    @IBOutlet weak var webDisplay: WKWebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        webDisplay.navigationDelegate = self
+        let url = URL(string: webUrl)!
+        print(webUrl)
+        webDisplay.load(URLRequest(url: url))
 
-        // Do any additional setup after loading the view.
+        webDisplay.allowsBackForwardNavigationGestures = true
     }
-    
+    // WKNavigationDelegate metodları
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            print("Web sayfası yüklenmeye başladı")
+        }
 
-    /*
-    // MARK: - Navigation
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            print("Web sayfası yüklenme tamamlandı")
+        }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            print("Web sayfası yüklenirken hata oluştu: \(error.localizedDescription)")
+        }
 }
